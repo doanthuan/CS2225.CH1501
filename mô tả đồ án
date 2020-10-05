@@ -1,0 +1,8 @@
+A. bài toán xác định xe (ô tô, xe máy) vi phạm giao thông
+  1. Input : file ảnh tại giao lộ
+  2. Output : trả về kết quả xác định những xe vi phạm giao thông
+B. Xác định thế nào là những xe vi phạm giao thông ?
+  1. Vi phạm giao thông là xe vượt qua vạch dừng khi đèn đỏ
+C. Bài toán cần detect các đối tượng : xe ô tô, xe máy, đèn tín hiệu giao thông
+  1. Dùng phương pháp, kỹ thuật gì để xác định các đối tượng ? Tại sao ?
+  2. Làm thế nào để xác định vị trí, thứ tự các đối tượng (xe, đèn đỏ, vạch dừng) ?
