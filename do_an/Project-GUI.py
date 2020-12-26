@@ -33,7 +33,7 @@ class Window(Frame):
         analyze.add_command(label="Region of Interest", command=self.regionOfInterest)
         menu.add_cascade(label="Analyze", menu=analyze)
 
-        self.filename = "Images/home.jpg"
+        self.filename = PRJ_PATH + "/Images/home.jpg"
         self.imgSize = Image.open(self.filename)
         self.tkimage =  ImageTk.PhotoImage(self.imgSize)
         self.w, self.h = (1366, 768)
@@ -189,6 +189,7 @@ class Window(Frame):
         video_src = self.filename
 
         cap = cv2.VideoCapture(video_src)
+        cap.set(cv2.CAP_PROP_FPS, 5)
 
         reader = imageio.get_reader(video_src)
         fps = reader.get_meta_data()['fps']    
@@ -197,22 +198,25 @@ class Window(Frame):
         j = 1
         while True:
             ret, image = cap.read()
-           
+            
             if (type(image) == type(None)):
                 writer.close()
                 break
             
+            # tiền xử lý ảnh (resize image, dưa về kiểu ma trận chuẩn)
             image_h, image_w, _ = image.shape
             new_image = od.preprocess_input(image, od.net_h, od.net_w)
 
-            # run the prediction
+            # run the prediction -> gọi hàm predict từ model yolo3
             yolos = od.yolov3.predict(new_image)
             boxes = []
-
+            
+            # trả về tất các các box tìm đc
             for i in range(len(yolos)):
                 # decode the output of the network
                 boxes += od.decode_netout(yolos[i][0], od.anchors[i], od.obj_thresh, od.nms_thresh, od.net_h, od.net_w)
-
+            
+            
             # correct the sizes of the bounding boxes
             od.correct_yolo_boxes(boxes, image_h, image_w, od.net_h, od.net_w)
 
@@ -224,7 +228,7 @@ class Window(Frame):
             
             writer.append_data(image2)
 
-            # cv2.imwrite('E:/Virtual Traffic Light Violation Detection System/Images/frame'+str(j)+'.jpg', image2)
+            cv2.imwrite(PRJ_PATH + '/Images/frame_{}.jpg'.format(j), image2)
             # self.show_image('E:/Virtual Traffic Light Violation Detection System/Images/frame'+str(j)+'.jpg')
 
             cv2.imshow('Traffic Violation', image2)
@@ -239,9 +243,10 @@ class Window(Frame):
 
         cv2.destroyAllWindows()
 
+#%%
 root = Tk()
 app = Window(root)
-root.geometry("%dx%d"%(535, 380))
+# root.geometry("%dx%d"%(535, 380))
+root.geometry("%dx%d"%(1024, 768))
 root.title("Traffic Violation")
-
 root.mainloop()

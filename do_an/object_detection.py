@@ -6,7 +6,7 @@ import struct
 import cv2
 import os
 
-#%%
+#%% Function
 PRJ_PATH = os.getcwd()
 
 class WeightReader:
@@ -241,6 +241,7 @@ def make_yolov3_model():
     model = Model(input_image, [yolo_82, yolo_94, yolo_106])    
     return model
 
+
 def preprocess_input(image, net_h, net_w):
     new_h, new_w, _ = image.shape
 
@@ -392,8 +393,9 @@ def draw_boxes(image, boxes, line, labels, obj_thresh, dcnt):
         
     return image
 
-#%%
-weights_path = PRJ_PATH + "/yolo/yolov3.weights"
+#%% MAIN
+# weights_path = PRJ_PATH + "/yolo/yolov3.weights"
+weights_path = "E:/Study/python/Traffic-Signal-Violation-Detection-System-master/yolo/yolov3.weights"
 # set some parameters
 net_h, net_w = 416, 416
 obj_thresh, nms_thresh = 0.5, 0.45
